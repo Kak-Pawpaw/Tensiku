@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pantau Tensi & Diet DASH</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Quicksand', sans-serif; background-color: #f0fdfa; }
+        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        /* Transisi smooth untuk buka-tutup kalkulator IMT */
+        .collapse-content { transition: max-height 0.3s ease-out; overflow: hidden; max-height: 0; }
+        .collapse-content.open { max-height: 500px; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased pb-10">
+
+    <div class="max-w-md mx-auto bg-white min-h-screen shadow-2xl relative">
+        
+        <div class="relative bg-teal-800 rounded-b-[2.5rem] overflow-hidden shadow-lg text-center text-white mb-6">
+            <div class="absolute inset-0 bg-[url('header.png')] bg-cover bg-center opacity-60"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-teal-900/95 to-teal-800/40"></div>
+            
+            <div class="relative p-8 pt-12 z-10">
+                <h1 class="text-4xl font-bold tracking-wide drop-shadow-md">TensiKu</h1>
+                <p class="text-base mt-2 opacity-95 drop-shadow-sm font-semibold">Pantau Kesehatan, Cegah Hipertensi</p>
+                <div class="mt-4 bg-white/20 inline-block px-4 py-1.5 rounded-full backdrop-blur-sm text-xs font-bold shadow-sm">
+                     KKN Kelompok 5 Sragen Tengah
+                </div>
+            </div>
+        </div>
+
+        <div class="p-6 pt-2 space-y-6">
+            
+            <div class="bg-blue-50 border-2 border-blue-200 p-4 rounded-2xl flex items-center gap-4 shadow-sm fade-in">
+                <input type="checkbox" id="cekObat" class="w-8 h-8 text-blue-600 rounded-lg focus:ring-blue-500 cursor-pointer transition">
+                <label for="cekObat" class="cursor-pointer">
+                    <p class="font-bold text-blue-900 text-lg leading-tight">Sudah Minum Obat Hari Ini?</p>
+                    <p class="text-xs text-blue-700 mt-1" id="teksTglObat">Tanggal: -</p>
+                </label>
+            </div>
+
+            <div class="bg-indigo-50 border border-indigo-100 rounded-2xl overflow-hidden fade-in shadow-sm">
+                <button onclick="toggleIMT()" class="w-full p-4 flex justify-between items-center text-indigo-900 font-bold hover:bg-indigo-100 transition">
+                    <span class="flex items-center gap-2">⚖️ Cek Berat Badan Ideal (IMT)</span>
+                    <svg id="iconIMT" class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                
+                <div id="kontenIMT" class="collapse-content bg-white px-4">
+                    <div class="py-4 space-y-4">
+                        <p class="text-xs text-gray-500">Kelebihan berat badan atau obesitas adalah salah satu faktor risiko utama hipertensi.</p>
+                        <div class="flex gap-4">
+                            <div class="flex-1">
+                                <label class="block text-xs font-bold text-gray-600 mb-1 text-center">Berat (kg)</label>
+                                <input type="number" id="beratBB" placeholder="Misal: 65" class="w-full text-center text-xl font-bold p-2 bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-indigo-500 transition">
+                            </div>
+                            <div class="flex-1">
+                                <label class="block text-xs font-bold text-gray-600 mb-1 text-center">Tinggi (cm)</label>
+                                <input type="number" id="tinggiBB" placeholder="Misal: 160" class="w-full text-center text-xl font-bold p-2 bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-indigo-500 transition">
+                            </div>
+                        </div>
+                        <button onclick="hitungIMT()" class="w-full bg-indigo-600 text-white font-bold py-2 rounded-xl hover:bg-indigo-700 transition active:scale-95">Hitung IMT</button>
+                        <div id="hasilIMT" class="hidden text-center p-3 rounded-xl mt-2 text-sm font-bold"></div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="border-gray-200">
+
+            <form id="formTensi" class="space-y-6 fade-in bg-white p-5 rounded-3xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] border border-gray-100">
+                <h2 class="text-center font-bold text-gray-800 text-lg mb-2">Pencatatan Tensi</h2>
+                <div class="mt-8 fade-in">
+                <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Riwayat Tensi Anda
+                </h2>
+
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-4">
+                    <canvas id="grafikTensi" height="150"></canvas>
+                </div>
+                <div id="listRiwayat" class="space-y-3"></div>
+                <div class="mt-6 text-center fade-in">
+                    <button onclick="unduhLaporanCSV()" class="bg-slate-700 hover:bg-slate-800 text-white text-sm font-bold py-3 px-6 rounded-xl shadow transition flex items-center justify-center gap-2 mx-auto">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        Unduh Laporan (Excel/CSV)
+                    </button>
+                    <p class="text-[10px] text-gray-400 mt-2">Format .csv bisa dibuka di Microsoft Excel</p>
+                </div>
+            </div>
+                <div class="flex gap-4">
+                    <div class="flex-1">
+                        <label class="block font-bold text-gray-700 text-xs mb-2 text-center">Angka Atas (Sistolik)</label>
+                        <input type="number" id="sistolik" required placeholder="120" 
+                               class="w-full text-center text-4xl font-bold p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:border-teal-500 focus:bg-white transition shadow-inner">
+                    </div>
+                    <div class="flex-1">
+                        <label class="block font-bold text-gray-700 text-xs mb-2 text-center">Angka Bawah (Diastolik)</label>
+                        <input type="number" id="diastolik" required placeholder="80" 
+                               class="w-full text-center text-4xl font-bold p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:border-teal-500 focus:bg-white transition shadow-inner">
+                    </div>
+                </div>
+
+                <div class="bg-teal-50 p-4 rounded-xl border border-teal-100 flex items-start gap-3">
+                    <input type="checkbox" id="operasi" class="w-6 h-6 mt-1 text-teal-600 rounded focus:ring-teal-500 cursor-pointer">
+                    <label for="operasi" class="text-teal-900 font-semibold text-xs cursor-pointer leading-relaxed">
+                        Centang ini jika Anda memiliki jadwal operasi dalam waktu dekat.
+                    </label>
+                </div>
+
+                <button type="submit" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold text-xl py-4 rounded-2xl shadow-lg transition transform active:scale-95">
+                    Cek & Simpan Hasil
+                </button>
+            </form>
+
+
+        </div>
+    </div>
+
+    <div id="modalDetail" class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center p-4 fade-in">
+        <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col relative">
+            
+            <div id="modalHeaderColor" class="p-6 text-center text-white relative flex-shrink-0">
+                <button onclick="tutupDetail()" class="absolute top-4 right-4 bg-white/20 hover:bg-white/40 rounded-full p-2 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+                <h3 class="text-sm font-semibold opacity-90 mb-1" id="modalTanggal">Tanggal</h3>
+                <div class="text-5xl font-bold tracking-tighter mb-2">
+                    <span id="modalSys">0</span><span class="text-2xl opacity-75">/</span><span id="modalDia">0</span>
+                </div>
+                <div id="modalStatus" class="inline-block px-4 py-1 bg-white/20 rounded-full text-lg font-bold backdrop-blur-sm">Status</div>
+            </div>
+
+            <div class="p-6 overflow-y-auto" id="modalKonten"></div>
+
+            <div class="p-4 border-t bg-gray-50 space-y-3 flex-shrink-0">
+                <button id="btnShareWA" onclick="bagikanKeWA()" class="w-full bg-green-500 text-white font-bold py-3 rounded-xl hover:bg-green-600 transition text-lg flex justify-center items-center gap-2 shadow-md">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    Kirim ke WhatsApp
+                </button>
+                <button onclick="tutupDetail()" class="w-full bg-gray-200 text-gray-800 font-bold py-3 rounded-xl hover:bg-gray-300 transition text-lg">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+// Variabel Global
+        let currentModalData = null;
+        let chartTensi; // Variabel untuk grafik Chart.js
+
+        // --- PENGATURAN TANGGAL HARI INI SECARA GLOBAL ---
+        const optionsTgl = { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' };
+        const hariIniStr = new Date().toLocaleDateString('id-ID', optionsTgl);
+
+        // --- FITUR B: LOGIKA PENGINGAT OBAT HARIAN ---
+        const cekObat = document.getElementById('cekObat');
+        const teksTglObat = document.getElementById('teksTglObat');
+        teksTglObat.innerText = `Hari ini: ${hariIniStr}`;
+
+        // Cek apakah hari ini sudah dicentang
+        if (localStorage.getItem('tglMinumObat') === hariIniStr) {
+            cekObat.checked = true;
+        }
+
+        cekObat.addEventListener('change', function(e) {
+            if (e.target.checked) {
+                localStorage.setItem('tglMinumObat', hariIniStr);
+            } else {
+                localStorage.removeItem('tglMinumObat');
+            }
+        });
+
+        // --- FITUR C: LOGIKA KALKULATOR IMT ---
+        function toggleIMT() {
+            const konten = document.getElementById('kontenIMT');
+            const icon = document.getElementById('iconIMT');
+            konten.classList.toggle('open');
+            icon.classList.toggle('rotate-180');
+        }
+
+        function hitungIMT() {
+            const berat = parseFloat(document.getElementById('beratBB').value);
+            const tinggiCm = parseFloat(document.getElementById('tinggiBB').value);
+            const boxHasil = document.getElementById('hasilIMT');
+
+            if (!berat || !tinggiCm) {
+                alert("Masukkan berat dan tinggi badan terlebih dahulu.");
+                return;
+            }
+
+            const tinggiM = tinggiCm / 100;
+            const imt = (berat / (tinggiM * tinggiM)).toFixed(1);
+            let kategori = "", warna = "";
+
+            if (imt < 18.5) { kategori = "Kekurangan Berat Badan"; warna = "bg-yellow-100 text-yellow-800 border-yellow-300"; }
+            else if (imt >= 18.5 && imt <= 24.9) { kategori = "Normal (Ideal)"; warna = "bg-green-100 text-green-800 border-green-300"; }
+            else if (imt >= 25 && imt <= 29.9) { kategori = "Kelebihan Berat Badan"; warna = "bg-orange-100 text-orange-800 border-orange-300"; }
+            else { kategori = "Obesitas (Risiko Tinggi Hipertensi)"; warna = "bg-red-100 text-red-800 border-red-300"; }
+
+            boxHasil.className = `block text-center p-3 rounded-xl mt-4 text-sm font-bold border-2 ${warna}`;
+            boxHasil.innerHTML = `Skor IMT: ${imt} <br><span class="text-lg">${kategori}</span>`;
+        }
+
+        // --- LOGIKA UTAMA TENSI (SISTEM PAKAR) ---
+        document.getElementById('formTensi').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const sys = parseInt(document.getElementById('sistolik').value);
+            const dia = parseInt(document.getElementById('diastolik').value);
+            const isOperasi = document.getElementById('operasi').checked;
+
+            // Validasi Medis
+            if (sys <= dia) return alert("PENGISIAN SALAH!\nSistolik harus lebih besar dari Diastolik.");
+            if (sys < 60 || sys > 300) return alert("Sistolik tidak valid (Batas normal alat: 60 - 300).");
+            if (dia < 40 || dia > 200) return alert("Diastolik tidak valid (Batas normal alat: 40 - 200).");
+
+            let status = "", headerColor = "", saranDiet = "";
+
+            // Klasifikasi
+            if (sys >= 180 || dia >= 120) { status = "Hipertensi Berat (Krisis)"; headerColor = "bg-red-600"; saranDiet = `<p class="text-red-700 font-bold mb-2">⚠️ BERBAHAYA! Segera periksakan diri ke IGD atau Dokter terdekat.</p>`; } 
+            else if (sys >= 140 || dia >= 90) { status = "Hipertensi Stage 2"; headerColor = "bg-orange-500"; saranDiet = generateSaranHipertensi(); } 
+            else if ((sys >= 130 && sys <= 139) || (dia >= 80 && dia <= 89)) { status = "Hipertensi Stage 1"; headerColor = "bg-yellow-500"; saranDiet = generateSaranHipertensi(); } 
+            else if (sys >= 120 && sys <= 129 && dia < 80) { status = "Pra Hipertensi"; headerColor = "bg-blue-500"; saranDiet = `<p class="mb-2">Tensi Anda mulai naik. Kurangi garam dan mulai gaya hidup <b>SANTAI</b>.</p>` + generateSaranHipertensi(); } 
+            else if (sys < 90 || dia < 60) { status = "Hipotensi (Darah Rendah)"; headerColor = "bg-indigo-400"; saranDiet = `<p class="text-indigo-800">Tensi Anda di bawah normal. Perbanyak minum air putih dan istirahat.</p>`; } 
+            else { status = "Normal"; headerColor = "bg-green-500"; saranDiet = `<p class="text-green-800 font-bold">Luar Biasa! Pertahankan gaya hidup sehat Anda.</p>`; }
+
+            // Peringatan Operasi
+            let alertOperasi = "";
+            if (isOperasi) {
+                if (sys >= 130 || dia >= 80) alertOperasi = `<div class="bg-red-50 border-l-4 border-red-500 p-4 rounded mb-4"><strong class="text-red-700">⚠️ Peringatan Pra-Operasi:</strong><p class="text-sm mt-1 text-red-800">Beritahu dokter anestesi Anda! Tensi Anda tinggi. Hindari obat <b>Ketamin</b> dan <b>Ephedrin</b>.</p><p class="text-sm mt-1 text-red-800">Patuhi aturan puasa 8 jam sebelum operasi.</p></div>`;
+                else alertOperasi = `<div class="bg-green-50 border-l-4 border-green-500 p-4 rounded mb-4"><strong class="text-green-700">✅ Persiapan Operasi:</strong><p class="text-sm mt-1 text-green-800">Tensi Anda terpantau aman. Jangan lupa puasa 8 jam sebelum operasi.</p></div>`;
+            }
+
+            // Peringatan Obat
+            let alertObat = "";
+            const sudahMinumObat = localStorage.getItem('tglMinumObat') === hariIniStr;
+            if ((sys >= 130 || dia >= 80) && !sudahMinumObat) {
+                alertObat = `
+                <div class="bg-red-100 border-l-4 border-red-600 p-4 rounded mb-4 animate-pulse">
+                    <strong class="text-red-800 text-base">⚠️ Peringatan: Anda Belum Minum Obat!</strong>
+                    <p class="text-sm mt-1 text-red-700">Tensi Anda terdeteksi tinggi. Sistem melihat Anda belum mencentang ceklis minum obat hari ini. Segera minum obat penurun tensi Anda!</p>
+                </div>`;
+            }
+
+            // Gabungkan Konten
+            const kontenHTML = alertObat + alertOperasi + saranDiet;
+            
+            // Simpan Data
+            const idBaru = Date.now();
+            const date = new Date();
+            const optionsJam = { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+            const tglStr = date.toLocaleDateString('id-ID', optionsJam).replace(/\./g, ':');
+
+            const dataBaru = { id: idBaru, tanggal: tglStr, sys: sys, dia: dia, status: status, color: headerColor, html: kontenHTML, isOp: isOperasi };
+            
+            let riwayat = JSON.parse(localStorage.getItem('dbTensi')) || [];
+            riwayat.unshift(dataBaru);
+            if (riwayat.length > 20) riwayat.pop(); 
+            localStorage.setItem('dbTensi', JSON.stringify(riwayat));
+
+            // Bersihkan Form dan Update Layar
+            document.getElementById('formTensi').reset();
+            tampilkanRiwayat();
+            renderGrafik(); // Update grafik setelah data baru masuk
+            bukaDetail(idBaru);
+        });
+
+        function generateSaranHipertensi() {
+            return `
+            <div class="space-y-4 text-sm">
+                <div>
+                    <h4 class="font-bold text-teal-800 flex items-center gap-1">🍽️ Anjuran Makanan (DASH Diet)</h4>
+                    <ul class="list-disc pl-5 mt-1 text-gray-700">
+                        <li><b>Bayam & Pisang:</b> Kaya magnesium dan kalium.</li>
+                        <li><b>Semangka:</b> L-citrulline untuk turunkan tensi.</li>
+                        <li><b>Cokelat Hitam (Pekat) & Kacang:</b> Baik untuk jantung.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-red-700 flex items-center gap-1">🚫 Wajib Dihindari</h4>
+                    <ul class="list-disc pl-5 mt-1 text-gray-700">
+                        <li>Makanan kaleng (sarden) & awetan (asinan).</li>
+                        <li>Penyedap (MSG) & bumbu asin (terasi, kecap).</li>
+                        <li>Roti/kue dengan tambahan soda kue.</li>
+                    </ul>
+                </div>
+                <div class="bg-teal-50 p-3 rounded-lg text-center border border-teal-100">
+                    <strong class="text-teal-800 text-base tracking-wide">Ingat S.A.N.T.A.I</strong><br>
+                    <span class="text-[11px] text-teal-700">Sedikit garam - Atur tidur - No smoking - Terus olahraga - Atur berat badan - Isi piring buah/sayur</span>
+                </div>
+            </div>`;
+        }
+
+        // --- RENDER RIWAYAT DAN TOMBOL HAPUS ---
+        function tampilkanRiwayat() {
+            const listEl = document.getElementById('listRiwayat');
+            listEl.innerHTML = ""; 
+            let riwayat = JSON.parse(localStorage.getItem('dbTensi')) || [];
+            
+            if (riwayat.length === 0) {
+                listEl.innerHTML = `<div class="text-center p-8 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl"><p class="text-gray-500 font-semibold">Belum ada data</p></div>`;
+                return;
+            }
+
+            riwayat.forEach(item => {
+                let borderColor = item.color.replace('bg-', 'border-').replace('500', '400').replace('600', '500');
+                const card = `
+                    <div class="bg-white border-l-8 ${borderColor} p-4 rounded-xl shadow-sm border-y border-r border-gray-100 flex justify-between items-center group relative hover:bg-gray-50 transition">
+                        <div onclick="bukaDetail(${item.id})" class="flex-1 cursor-pointer">
+                            <p class="text-[10px] text-gray-400 font-bold mb-0.5 uppercase tracking-wider">${item.tanggal}</p>
+                            <p class="font-bold text-gray-800 text-sm leading-tight">${item.status}</p>
+                        </div>
+                        <div class="text-right flex items-center gap-2">
+                            <span class="text-3xl font-bold text-gray-800 mr-2">${item.sys}<span class="text-lg text-gray-400 font-normal">/${item.dia}</span></span>
+                            <button onclick="hapusRiwayat(${item.id})" class="text-red-400 hover:text-red-700 bg-red-50 hover:bg-red-200 p-2 rounded-lg transition" title="Hapus Data">
+                                🗑️
+                            </button>
+                        </div>
+                    </div>
+                `;
+                listEl.innerHTML += card;
+            });
+        }
+
+        function hapusRiwayat(id) {
+            if(confirm("Yakin ingin menghapus data tensi ini?")) {
+                let riwayat = JSON.parse(localStorage.getItem('dbTensi')) || [];
+                riwayat = riwayat.filter(item => item.id !== id);
+                localStorage.setItem('dbTensi', JSON.stringify(riwayat));
+                tampilkanRiwayat();
+                renderGrafik(); // Update grafik setelah dihapus
+            }
+        }
+
+        // --- RENDER GRAFIK CHART.JS ---
+        function renderGrafik() {
+            const ctx = document.getElementById('grafikTensi');
+            if(!ctx) return;
+            
+            let riwayat = JSON.parse(localStorage.getItem('dbTensi')) || [];
+            if(riwayat.length === 0) return;
+
+            // Ambil maksimal 7 data terakhir, lalu balik (reverse) agar terlama di kiri
+            let dataGrafik = riwayat.slice(0, 7).reverse();
+            
+            const labels = dataGrafik.map(item => item.tanggal.split(' ')[0]); 
+            const dataSys = dataGrafik.map(item => item.sys);
+            const dataDia = dataGrafik.map(item => item.dia);
+
+            if (chartTensi) {
+                chartTensi.destroy(); // Hapus grafik lama sebelum gambar baru
+            }
+
+            chartTensi = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Sistolik', data: dataSys, borderColor: 'rgb(239, 68, 68)', backgroundColor: 'rgba(239, 68, 68, 0.1)', tension: 0.3, fill: true, borderWidth: 2 },
+                        { label: 'Diastolik', data: dataDia, borderColor: 'rgb(59, 130, 246)', backgroundColor: 'rgba(59, 130, 246, 0.1)', tension: 0.3, fill: true, borderWidth: 2 }
+                    ]
+                },
+                options: { 
+                    responsive: true, 
+                    plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } }, 
+                    scales: { y: { min: 40, max: 220 } } 
+                }
+            });
+        }
+
+        function bukaDetail(id) {
+            let riwayat = JSON.parse(localStorage.getItem('dbTensi')) || [];
+            currentModalData = riwayat.find(item => item.id === id);
+            
+            if (currentModalData) {
+                document.getElementById('modalTanggal').innerText = currentModalData.tanggal;
+                document.getElementById('modalSys').innerText = currentModalData.sys;
+                document.getElementById('modalDia').innerText = currentModalData.dia;
+                document.getElementById('modalStatus').innerText = currentModalData.status;
+                document.getElementById('modalHeaderColor').className = `p-6 text-center text-white relative rounded-t-3xl ${currentModalData.color}`;
+                document.getElementById('modalKonten').innerHTML = currentModalData.html;
+                document.getElementById('modalDetail').classList.remove('hidden');
+            }
+        }
+
+        function tutupDetail() {
+            document.getElementById('modalDetail').classList.add('hidden');
+        }
+
+        // --- FITUR A: FUNGSI SHARE KE WHATSAPP ---
+        function bagikanKeWA() {
+            if (!currentModalData) return;
+            
+            let teksPesan = `Halo, ini catatan Tensi saya dari *TensiKu*\n\n`;
+            teksPesan += `🗓️ *Tanggal:* ${currentModalData.tanggal}\n`;
+            teksPesan += `🩺 *Hasil Tensi:* ${currentModalData.sys}/${currentModalData.dia} mmHg\n`;
+            teksPesan += `📊 *Status:* ${currentModalData.status}\n\n`;
+            
+            if(currentModalData.isOp) {
+                teksPesan += `🚨 *Peringatan:* Saya berencana melakukan operasi dalam waktu dekat. Mohon perhatikan riwayat tensi ini sebelum memberi tindakan anestesi.\n\n`;
+            }
+
+            teksPesan += `Mohon arahannya.\n_Catatan ini dibuat otomatis via Web App TensiKu_`;
+
+            const encodedText = encodeURIComponent(teksPesan);
+            window.open(`https://wa.me/?text=${encodedText}`, '_blank');
+        }
+
+        // Jalankan saat halaman web pertama kali dibuka
+        window.onload = function() {
+            tampilkanRiwayat();
+            renderGrafik();
+        };
+
+// --- FITUR E: FUNGSI UNDUH LAPORAN (CSV) ---
+        function unduhLaporanCSV() {
+            let riwayat = JSON.parse(localStorage.getItem('dbTensi')) || [];
+            if (riwayat.length === 0) {
+                alert("Belum ada data untuk diunduh.");
+                return;
+            }
+
+            // Membuat Header Kolom Excel
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Tanggal,Sistolik (Atas),Diastolik (Bawah),Status Tensi,Jadwal Operasi\n";
+
+            // Looping dan memasukkan data ke baris CSV
+            riwayat.forEach(function(row) {
+                let isOpStr = row.isOp ? "Ya" : "Tidak";
+                // Menghilangkan koma pada tanggal agar kolom CSV tidak berantakan
+                let tglAman = row.tanggal.replace(/,/g, ' '); 
+                
+                let rowData = `${tglAman},${row.sys},${row.dia},${row.status},${isOpStr}`;
+                csvContent += rowData + "\n";
+            });
+
+            // Memicu proses download di browser (Chrome/Safari)
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "Laporan_TensiKu.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link); // Bersihkan elemen setelah diunduh
+        }
+    </script>
+</body>
+</html>
