@@ -210,6 +210,76 @@
                     </div>
                 </div>
             </div>
+            <div class="bg-white border border-purple-100 rounded-2xl overflow-hidden shadow-sm mb-6">
+                <button onclick="toggleSection('edu5', 'iconEdu5')" class="w-full p-4 flex justify-between items-center text-purple-900 font-bold bg-purple-50 hover:bg-purple-100 transition">
+                    <span class="flex items-center gap-3"><span class="text-xl">⚙️</span> Interaktif: Kenali Alat Tensi</span>
+                    <svg id="iconEdu5" class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div id="edu5" class="collapse-content bg-white px-4">
+                    <div class="py-4 space-y-4">
+                        
+                        <p class="text-xs text-gray-500 text-center">Tekan titik-titik berdenyut pada gambar di bawah untuk melihat fungsinya.</p>
+
+<div class="relative w-full max-w-sm mx-auto bg-gray-50 rounded-xl border border-gray-200 p-2">
+                            <img src="tensimeter.png" alt="Skema Tensimeter" class="w-full h-auto rounded-lg">
+                            
+                            <button onclick="lihatInfoAlat(1)" class="absolute top-[23%] left-[76%] flex h-8 w-8 items-center justify-center transform -translate-x-1/2 -translate-y-1/2 focus:outline-none">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-6 w-6 bg-purple-600 text-white text-[10px] font-bold items-center justify-center border-2 border-white shadow-md">1</span>
+                            </button>
+
+                            <button onclick="lihatInfoAlat(2)" class="absolute top-[35%] left-[79%] flex h-8 w-8 items-center justify-center transform -translate-x-1/2 -translate-y-1/2 focus:outline-none">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-6 w-6 bg-purple-600 text-white text-[10px] font-bold items-center justify-center border-2 border-white shadow-md">2</span>
+                            </button>
+
+                            <button onclick="lihatInfoAlat(3)" class="absolute top-[80%] left-[65%] flex h-8 w-8 items-center justify-center transform -translate-x-1/2 -translate-y-1/2 focus:outline-none">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-6 w-6 bg-purple-600 text-white text-[10px] font-bold items-center justify-center border-2 border-white shadow-md">3</span>
+                            </button>
+
+                            <button onclick="lihatInfoAlat(4)" class="absolute top-[75%] left-[37%] flex h-8 w-8 items-center justify-center transform -translate-x-1/2 -translate-y-1/2 focus:outline-none">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-6 w-6 bg-purple-600 text-white text-[10px] font-bold items-center justify-center border-2 border-white shadow-md">4</span>
+                            </button>
+
+                            <button onclick="lihatInfoAlat(5)" class="absolute top-[49%] left-[16%] flex h-8 w-8 items-center justify-center transform -translate-x-1/2 -translate-y-1/2 focus:outline-none">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-6 w-6 bg-purple-600 text-white text-[10px] font-bold items-center justify-center border-2 border-white shadow-md">5</span>
+                            </button>
+
+                            <button onclick="lihatInfoAlat(6)" class="absolute top-[66%] left-[32%] flex h-8 w-8 items-center justify-center transform -translate-x-1/2 -translate-y-1/2 focus:outline-none">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-6 w-6 bg-purple-600 text-white text-[10px] font-bold items-center justify-center border-2 border-white shadow-md">6</span>
+                            </button>
+
+                            <button onclick="lihatInfoAlat(7)" class="absolute top-[10%] left-[62%] flex h-8 w-8 items-center justify-center transform -translate-x-1/2 -translate-y-1/2 focus:outline-none">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-6 w-6 bg-blue-600 text-white text-[10px] font-bold items-center justify-center border-2 border-white shadow-md">7</span>
+                            </button>
+
+                            <button onclick="lihatInfoAlat(8)" class="absolute top-[20%] left-[67%] flex h-8 w-8 items-center justify-center transform -translate-x-1/2 -translate-y-1/2 focus:outline-none">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-6 w-6 bg-blue-600 text-white text-[10px] font-bold items-center justify-center border-2 border-white shadow-md">8</span>
+                            </button>
+
+                            <button onclick="lihatInfoAlat(9)" class="absolute top-[70%] left-[78%] flex h-8 w-8 items-center justify-center transform -translate-x-1/2 -translate-y-1/2 focus:outline-none">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-6 w-6 bg-green-600 text-white text-[10px] font-bold items-center justify-center border-2 border-white shadow-md">9</span>
+                            </button>
+                        </div>
+
+                        <div id="infoAlatBox" class="bg-purple-50 border-2 border-dashed border-purple-200 p-4 rounded-xl text-center transition-all duration-300 min-h-[90px] flex flex-col justify-center items-center">
+                            <span class="text-3xl mb-2">👆</span>
+                            <p class="text-sm font-bold text-purple-800">Silakan klik salah satu angka berdenyut pada gambar alat di atas.</p>
+                        </div>
+
+                        <div id="funFactBox" class="mt-4 bg-gray-50 p-3 rounded-lg border border-gray-200 text-xs text-gray-600 leading-relaxed transition-all duration-300">
+                            <strong class="text-gray-800">💡 Tahukah Anda?</strong> Mesin mendeteksi tekanan menggunakan algoritma osilometri dan sensor khusus (Microcontroller) sehingga hasilnya digital. Klik angka di atas untuk fakta lainnya!
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -455,6 +525,89 @@
 
         // INIT
         window.onload = function() { tampilkanRiwayat(); renderGrafik(); };
+
+// --- LOGIKA INTERACTIVE HOTSPOT ALAT TENSI ---
+        const dataAlat = {
+            1: { 
+                judul: "1. Tombol Start (Mulai)", 
+                deskripsi: "Berfungsi untuk menyalakan mesin dan memulai pemompaan udara ke dalam manset secara otomatis.",
+                warna: "text-purple-700",
+                funFact: "⚙️ <b>Fakta Elektro:</b> Saat tombol Start ditekan, mikrokontroler mengirim sinyal aktif ke motor pompa DC mini untuk menyedot udara luar masuk ke manset."
+            },
+            2: { 
+                judul: "2. Tombol Stop (Berhenti)", 
+                deskripsi: "Berfungsi untuk mematikan alat atau menghentikan pemompaan secara darurat jika manset terasa terlalu kencang atau ada kesalahan ukur.",
+                warna: "text-purple-700",
+                funFact: "🛑 <b>Fakta Sistem:</b> Saat tombol Stop ditekan di tengah proses, katup <i>solenoid valve</i> akan langsung terbuka lebar untuk membuang seluruh tekanan udara dalam hitungan detik."
+            },
+            3: { 
+                judul: "3. Tombol Memory", 
+                deskripsi: "Digunakan untuk memanggil dan melihat kembali riwayat hasil pengukuran tekanan darah Anda sebelumnya.",
+                warna: "text-purple-700",
+                funFact: "💾 <b>Fakta IT:</b> Data Anda disimpan dalam chip <i>EEPROM (Electrically Erasable Programmable Read-Only Memory)</i>, sehingga datanya tidak akan hilang meskipun baterai tensimeter dicabut."
+            },
+            4: { 
+                judul: "4. Kompartemen Baterai", 
+                deskripsi: "Terletak di bagian belakang atau bawah alat. Berfungsi sebagai tempat menaruh baterai sebagai sumber daya utama mesin.",
+                warna: "text-purple-700",
+                funFact: "🔋 <b>Fakta Hardware:</b> Tensimeter digital umumnya membutuhkan tegangan 6 Volt (4 buah baterai AA). Daya ini dialirkan ke <i>Mainboard</i> untuk menyalakan layar LCD dan menggerakkan dinamo motor pompa udara."
+            },
+            5: { 
+                judul: "5. Manset Standar (22-24 cm)", 
+                deskripsi: "Kain yang dililitkan pada lengan atas. Mesin akan memompa manset ini hingga mengembang untuk menghentikan aliran darah arteri utama sementara.",
+                warna: "text-purple-700",
+                funFact: "🎈 <b>Fakta Fisika:</b> Manset menggunakan prinsip tekanan pneumatik. Ia harus menekan lengan lebih kuat dari tekanan darah tertinggi Anda (Sistolik) agar darah berhenti mengalir sesaat."
+            },
+            6: { 
+                judul: "6. Soket Pipa Manset", 
+                deskripsi: "Lubang tempat menyambungkan ujung pipa udara dari manset ke dalam mesin tensimeter.",
+                warna: "text-purple-700",
+                funFact: "🔌 <b>Fakta Sensor:</b> Tepat di ujung lubang ini bagian dalam, terdapat <i>Pressure Transducer</i> (Sensor Tekanan) yang bertugas mengubah tekanan udara (besaran fisik) menjadi sinyal listrik analog."
+            },
+            7: { 
+                judul: "7. Layar Sistolik (Angka Atas)", 
+                deskripsi: "Menunjukkan tekanan dalam pembuluh darah saat jantung berdetak atau berkontraksi. Normalnya < 120 mmHg.",
+                warna: "text-blue-700",
+                funFact: "❤️ <b>Fakta Medis:</b> Sistolik adalah gelombang tekanan paling kuat. Ini bagaikan tekanan air sesaat setelah keran dibuka penuh. Jika terlalu tinggi, pipa (pembuluh darah) bisa pecah."
+            },
+            8: { 
+                judul: "8. Layar Diastolik (Angka Bawah)", 
+                deskripsi: "Menunjukkan tekanan dalam pembuluh darah saat jantung beristirahat di antara detak. Normalnya < 80 mmHg.",
+                warna: "text-blue-700",
+                funFact: "📉 <b>Fakta Medis:</b> Meskipun jantung sedang 'istirahat' sebentar, pembuluh darah tetap memiliki tekanan dasar. Inilah yang disebut Diastolik."
+            },
+            9: { 
+                judul: "9. Layar Denyut Nadi (Pulse)", 
+                deskripsi: "Menampilkan jumlah detak jantung per menit berdasarkan perubahan sinyal osilasi akibat aliran darah.",
+                warna: "text-green-700",
+                funFact: "📈 <b>Fakta Algoritma:</b> Darah yang mengalir menabrak dinding manset menghasilkan getaran (osilasi). Algoritma mesin akan memfilter 'noise' gerakan tubuh dan hanya menghitung getaran nadi yang murni."
+            }
+        };
+
+        function lihatInfoAlat(id) {
+            const box = document.getElementById('infoAlatBox');
+            const funFactBox = document.getElementById('funFactBox');
+            const info = dataAlat[id];
+            
+            // Animasi ganti konten
+            box.style.opacity = 0;
+            funFactBox.style.opacity = 0;
+            
+            setTimeout(() => {
+                // Update Kotak Info Utama
+                box.className = "bg-white border-2 border-solid shadow-md p-4 rounded-xl text-left transition-all duration-300 min-h-[90px] flex flex-col justify-center";
+                box.innerHTML = `
+                    <h4 class="font-bold ${info.warna} text-base border-b pb-1 mb-2">${info.judul}</h4>
+                    <p class="text-xs text-gray-700 leading-relaxed">${info.deskripsi}</p>
+                `;
+                
+                // Update Kotak Fun Fact
+                funFactBox.innerHTML = info.funFact;
+
+                box.style.opacity = 1;
+                funFactBox.style.opacity = 1;
+            }, 200);
+        }
     </script>
 </body>
 </html>
