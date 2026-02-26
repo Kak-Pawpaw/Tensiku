@@ -423,12 +423,20 @@
             bukaDetail(idBaru);
         });
 
-        function generateSaranHipertensi() {
+function generateSaranHipertensi() {
             return `
-            <div class="space-y-4 text-sm mt-3">
-                <div class="bg-teal-50 p-3 rounded-lg text-center border border-teal-100">
-                    <strong class="text-teal-800 tracking-wide">Ingat S.A.N.T.A.I</strong><br>
-                    <span class="text-[11px] text-teal-700">Sedikit garam - Atur tidur - No smoking - Terus olahraga - Atur berat badan - Isi sayur/buah</span>
+            <div class="space-y-3 text-sm mt-3 text-left">
+                <div class="bg-teal-50 p-3 rounded-lg border border-teal-100">
+                    <strong class="text-teal-800 tracking-wide block text-center mb-1">Ingat S.A.N.T.A.I</strong>
+                    <p class="text-[11px] text-teal-700 text-center leading-tight">Sedikit garam - Atur tidur - No smoking - Terus olahraga - Atur berat badan - Isi sayur/buah</p>
+                </div>
+                
+                <div class="bg-amber-50 p-3 rounded-lg border border-amber-100">
+                    <strong class="text-amber-800 text-xs block mb-1">🍉 Rekomendasi DASH Diet:</strong>
+                    <ul class="text-[11px] text-amber-700 list-disc pl-4 space-y-1">
+                        <li><b>Perbanyak:</b> Bayam, kentang, pisang, semangka (L-citrulline), dan cokelat hitam.</li>
+                        <li><b>Hindari:</b> Sarden, MSG, makanan kaleng, dan saus tomat.</li>
+                    </ul>
                 </div>
             </div>`;
         }
